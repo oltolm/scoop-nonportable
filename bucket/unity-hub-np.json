@@ -1,0 +1,40 @@
+{
+    "version": "2.4.4",
+    "description": "Management tool for Unity installations and projects",
+    "homepage": "https://docs.unity3d.com/Manual/GettingStartedInstallingHub.html",
+    "license": {
+        "identifier": "Proprietary",
+        "url": "https://unity3d.com/legal/terms-of-service"
+    },
+    "architecture": {
+        "64bit": {
+            "url": "https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.exe#/setup.exe",
+            "hash": "62c7acbfd59549d683bbe3c9370aa218550253edfc0f5674eb0611c7b7cdd562"
+        }
+    },
+    "installer": {
+        "script": [
+            "Invoke-ExternalCommand \"$dir\\setup.exe\" -ArgumentList @('/S', \"/D=$dir\") -RunAs | Out-Null",
+            "Remove-Item \"$dir\\setup.exe\""
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "Invoke-ExternalCommand \"$dir\\Uninstall Unity Hub.exe\" -ArgumentList @('/S') -RunAs | Out-Null",
+            "while (Get-Process 'Un_A' -ErrorAction SilentlyContinue) {",
+            "    Start-Sleep -Seconds 1",
+            "}"
+        ]
+    },
+    "checkver": {
+        "url": "https://unity3d.com/hub/whats-new",
+        "regex": "<h2>([\\d.]+)</h2>"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.exe#/setup.exe"
+            }
+        }
+    }
+}
